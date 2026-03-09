@@ -4,71 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness Market | Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* СИЯЮЩИЙ ФОН */
         body {
             margin: 0;
             background: #050505;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             color: white;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
         }
 
-        .blob {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(135deg, #7c3aed, #3b82f6);
-            filter: blur(120px);
-            border-radius: 50%;
-            z-index: -1;
-            animation: move 10s infinite alternate;
-        }
+        .blob { position: absolute; width: 400px; height: 400px; background: linear-gradient(135deg, #7c3aed, #3b82f6); filter: blur(150px); border-radius: 50%; z-index: -1; animation: move 15s infinite alternate; }
+        @keyframes move { from { transform: translate(-200px, 100px); } to { transform: translate(200px, 300px); } }
 
-        @keyframes move { from { transform: translate(-100px, 100px); } to { transform: translate(100px, 300px); } }
+        .glass-container { width: 90%; max-width: 450px; padding: 30px; margin-top: 40px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 40px; }
 
-        /* КАРТОЧКА СТЕКЛА */
-        .glass-container {
-            width: 90%;
-            max-width: 450px;
-            padding: 40px;
-            margin-top: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
+        .product { background: rgba(255, 255, 255, 0.08); padding: 18px; margin-bottom: 12px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; }
+        
+        button { background: #fff; color: #000; border: none; padding: 10px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #e0e0e0; }
 
-        h1 { font-size: 24px; margin-bottom: 25px; letter-spacing: -0.5px; }
-
-        .product {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .price { font-weight: bold; color: #a5b4fc; }
-
-        button {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:active { transform: scale(0.95); }
+        /* Корзина */
+        #cart-btn { position: fixed; bottom: 30px; background: #7c3aed; color: white; padding: 15px 30px; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        
+        /* Модалка оплаты */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); justify-content: center; align-items: center; }
+        .modal-content { background: #1a1a1a; padding: 40px; border-radius: 30px; text-align: center; width: 80%; max-width: 300px; border: 1px solid #333; }
     </style>
 </head>
 <body>
@@ -76,58 +40,42 @@
 <div class="blob"></div>
 
 <div class="glass-container">
-    <h1>Фитнес Магазин</h1>
-
-    <div class="product">
-        <div>
-            <div>Протеин</div>
-            <div class="price">2500</div>
+    <h1>Fitness Store</h1>
+    <div id="products-list">
+        <div class="product" data-name="Протеин" data-price="2500">
+            <div><div>Протеин</div><div class="price">2500 ₽</div></div>
+            <button onclick="addToCart('Протеин', 2500)">Взять</button>
         </div>
-        <button onclick="alert('Добавлено!')">Взять</button>
-    </div>
-
-    <div class="product">
-        <div>
-            <div>Креатин</div>
-            <div class="price">4500</div>
+        <div class="product" data-name="Креатин" data-price="4500">
+            <div><div>Креатин</div><div class="price">4500 ₽</div></div>
+            <button onclick="addToCart('Креатин', 4500)">Взять</button>
         </div>
-        <button onclick="alert('Добавлено!')">Взять</button>
-    </div>
-
-    <div class="product">
-        <div>
-            <div>Психотик</div>
-            <div class="price">3500</div>
-        </div>
-        <button onclick="alert('Добавлено!')">Взять</button>
-    </div>
-    
-
-    <div class="product">
-        <div>
-            <div>Батончик Mega Nut</div>
-            <div class="price">150</div>
-        </div>
-        <button onclick="alert('Добавлено!')">Взять</button>
-    </div>
-
-    <div class="product">
-        <div>
-            <div>BCAA Energy</div>
-            <div class="price">1800 ₽</div>
-        </div>
-        <button onclick="alert('Довбавлено!')">Взять</button>
     </div>
 </div>
 
-    <div class="product">
-        <div>
-            <div>Энергетик GORILLA</div>
-            <div class="price">500</div>
-        </div>
-        <button onclick="alert('Добавлено!')">Взять</button>
-    </div>
+<div id="cart-btn" onclick="openModal()">🛒 Корзина (<span id="cart-count">0</span>)</div>
 
-    
+<div class="modal" id="payment-modal">
+    <div class="modal-content">
+        <h2>Итого к оплате: <span id="total-price">0</span> ₽</h2>
+        <button onclick="alert('Оплата прошла успешно!')">Оплатить</button>
+        <button onclick="document.getElementById('payment-modal').style.display='none'" style="background:transparent; color:#888;">Закрыть</button>
+    </div>
+</div>
+
+<script>
+    let cart = [];
+    function addToCart(name, price) {
+        cart.push({name, price});
+        document.getElementById('cart-count').innerText = cart.length;
+        alert(name + ' добавлен!');
+    }
+    function openModal() {
+        let total = cart.reduce((sum, item) => sum + item.price, 0);
+        document.getElementById('total-price').innerText = total;
+        document.getElementById('payment-modal').style.display = 'flex';
+    }
+</script>
+
 </body>
 </html>
