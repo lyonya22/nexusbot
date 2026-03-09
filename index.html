@@ -6,70 +6,80 @@
     <title>Fitness Market | Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            background: #050505;
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .blob { position: absolute; width: 400px; height: 400px; background: linear-gradient(135deg, #7c3aed, #3b82f6); filter: blur(150px); border-radius: 50%; z-index: -1; animation: move 15s infinite alternate; }
+        body { margin: 0; background: #050505; font-family: 'Inter', sans-serif; color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding-bottom: 50px; }
+        .blob { position: fixed; width: 400px; height: 400px; background: linear-gradient(135deg, #7c3aed, #3b82f6); filter: blur(150px); border-radius: 50%; z-index: -1; animation: move 15s infinite alternate; }
         @keyframes move { from { transform: translate(-200px, 100px); } to { transform: translate(200px, 300px); } }
-
-        .glass-container { width: 90%; max-width: 450px; padding: 30px; margin-top: 40px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 40px; }
-
+        
+        .container { width: 90%; max-width: 500px; margin-top: 40px; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 25px; margin-bottom: 20px; }
+        
+        h1 { margin: 0 0 10px 0; font-size: 28px; }
+        .about-text { color: #ccc; font-size: 14px; line-height: 1.6; }
+        
         .product { background: rgba(255, 255, 255, 0.08); padding: 18px; margin-bottom: 12px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .price { font-weight: bold; color: #a5b4fc; }
         
         button { background: #fff; color: #000; border: none; padding: 10px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #e0e0e0; }
+        button:hover { transform: scale(1.05); background: #f0f0f0; }
 
-        /* Корзина */
-        #cart-btn { position: fixed; bottom: 30px; background: #7c3aed; color: white; padding: 15px 30px; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        #cart-btn { position: fixed; bottom: 30px; background: #7c3aed; color: white; padding: 15px 30px; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4); font-weight: 600; }
         
-        /* Модалка оплаты */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); justify-content: center; align-items: center; }
-        .modal-content { background: #1a1a1a; padding: 40px; border-radius: 30px; text-align: center; width: 80%; max-width: 300px; border: 1px solid #333; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); justify-content: center; align-items: center; z-index: 10; }
+        .modal-content { background: #1a1a1a; padding: 40px; border-radius: 30px; text-align: center; width: 80%; max-width: 320px; border: 1px solid #333; }
     </style>
 </head>
 <body>
 
 <div class="blob"></div>
 
-<div class="glass-container">
-    <h1>Fitness Store</h1>
-    <div id="products-list">
-        <div class="product" data-name="Протеин" data-price="2500">
-            <div><div>Протеин</div><div class="price">2500 ₽</div></div>
-            <button onclick="addToCart('Протеин', 2500)">Взять</button>
-        </div>
-        <div class="product" data-name="Креатин" data-price="4500">
-            <div><div>Креатин</div><div class="price">4500 ₽</div></div>
-            <button onclick="addToCart('Креатин', 4500)">Взять</button>
-        </div>
+<div class="container">
+    <div class="glass">
+        <h1>О нас</h1>
+        <div class="about-text">Мы — премиальный маркет спортивного питания. Помогаем атлетам достигать результатов с 2026 года. Только топовые бренды и лучшее качество для вашего тела.</div>
     </div>
+
+    <div id="products-list"></div>
 </div>
 
 <div id="cart-btn" onclick="openModal()">🛒 Корзина (<span id="cart-count">0</span>)</div>
 
 <div class="modal" id="payment-modal">
     <div class="modal-content">
-        <h2>Итого к оплате: <span id="total-price">0</span> ₽</h2>
-        <button onclick="alert('Оплата прошла успешно!')">Оплатить</button>
-        <button onclick="document.getElementById('payment-modal').style.display='none'" style="background:transparent; color:#888;">Закрыть</button>
+        <h2>Итого: <span id="total-price">0</span> ₽</h2>
+        <button onclick="alert('Спасибо за заказ!')">Оплатить через Apple Pay</button>
+        <button onclick="document.getElementById('payment-modal').style.display='none'" style="background:transparent; color:#888; margin-top:10px;">Вернуться</button>
     </div>
 </div>
 
 <script>
+    const products = [
+        {name: "Протеин Whey Pro", price: 2500},
+        {name: "Креатин Monohydrate", price: 1200},
+        {name: "Психотик (Предтреник)", price: 3500},
+        {name: "Батончик Mega Nut", price: 150},
+        {name: "BCAA Energy", price: 1800},
+        {name: "Энергетик Gorilla", price: 500},
+        {name: "Витамины Daily Pack", price: 900}
+    ];
+
     let cart = [];
+    const list = document.getElementById('products-list');
+
+    // Рендер товаров
+    products.forEach(p => {
+        list.innerHTML += `
+            <div class="product">
+                <div><div>${p.name}</div><div class="price">${p.price} ₽</div></div>
+                <button onclick="addToCart('${p.name}', ${p.price})">Взять</button>
+            </div>
+        `;
+    });
+
     function addToCart(name, price) {
         cart.push({name, price});
         document.getElementById('cart-count').innerText = cart.length;
-        alert(name + ' добавлен!');
     }
+
     function openModal() {
         let total = cart.reduce((sum, item) => sum + item.price, 0);
         document.getElementById('total-price').innerText = total;
