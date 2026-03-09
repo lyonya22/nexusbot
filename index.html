@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Fitness Store | Grid Layout</title>
+    <title>Fitness Market | Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; background: #050505; color: white; font-family: 'Inter', sans-serif; }
@@ -22,49 +22,88 @@
         }
         .card:hover { border-color: #7c3aed; transform: translateY(-10px); }
         
-        .img-placeholder { height: 180px; background: rgba(255,255,255,0.05); border-radius: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
+        .img-placeholder { height: 150px; background: rgba(255,255,255,0.05); border-radius: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 50px; }
         
         .price { font-size: 20px; font-weight: 800; margin: 10px 0; color: #a5b4fc; }
         
-        header { padding: 40px 0; text-align: center; }
-        h1 { font-size: 40px; margin: 0; }
+        /* Навигация */
+        header { padding: 40px 0; text-align: center; display: flex; justify-content: center; gap: 20px; }
+        button.nav-btn { background: rgba(255,255,255,0.1); border: none; color: white; padding: 10px 20px; border-radius: 12px; cursor: pointer; }
         
-        button { background: #7c3aed; color: white; border: none; padding: 12px 25px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 600; }
+        /* Модальные окна */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); justify-content: center; align-items: center; z-index: 100; }
+        .modal-content { background: #1a1a1a; padding: 40px; border-radius: 30px; width: 80%; max-width: 400px; border: 1px solid #333; }
+        
+        button.main-btn { background: #7c3aed; color: white; border: none; padding: 12px 25px; border-radius: 15px; cursor: pointer; width: 100%; font-weight: 600; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Fitness Market</h1>
-    <p style="color: #888;">Премиальное питание для ваших результатов</p>
+    <button class="nav-btn" onclick="showModal('about-modal')">О нас</button>
+    <button class="nav-btn" onclick="showModal('cart-modal')">🛒 Корзина</button>
 </header>
 
 <div class="container">
-    <div class="grid" id="product-grid">
-        </div>
+    <div class="grid" id="product-grid"></div>
+</div>
+
+<div class="modal" id="about-modal">
+    <div class="modal-content">
+        <h2>О нас</h2>
+        <p>Мы — Fitness Market. С 2026 года доставляем лучшие добавки для ваших тренировок. Качество, проверенное чемпионами.</p>
+        <button class="main-btn" onclick="hideModals()">Закрыть</button>
+    </div>
+</div>
+
+<div class="modal" id="cart-modal">
+    <div class="modal-content">
+        <h2>Ваш заказ</h2>
+        <div id="cart-items">Пусто</div>
+        <button class="main-btn" style="margin-top:20px;" onclick="alert('Заказ оформлен!')">Оплатить</button>
+        <button class="nav-btn" onclick="hideModals()" style="width:100%; margin-top:10px;">Назад</button>
+    </div>
 </div>
 
 <script>
     const products = [
         {name: "Whey Protein", price: 2500, icon: "🥤"},
-        {name: "Creatine", price: 1200, icon: "⚡"},
+        {name: "Creatine Mono", price: 1200, icon: "⚡"},
         {name: "Pre-workout", price: 3500, icon: "🔥"},
         {name: "Protein Bar", price: 150, icon: "🍫"},
         {name: "BCAA Powder", price: 1800, icon: "🧊"},
-        {name: "Energy Drink", price: 500, icon: "🔋"}
+        {name: "Energy Gorilla", price: 500, icon: "🔋"},
+        {name: "Vitamin D3", price: 800, icon: "☀️"},
+        {name: "Omega-3", price: 1100, icon: "🐟"}
     ];
 
+    let cart = [];
+
     const grid = document.getElementById('product-grid');
-    products.forEach(p => {
+    products.forEach((p, index) => {
         grid.innerHTML += `
             <div class="card">
                 <div class="img-placeholder">${p.icon}</div>
                 <h3>${p.name}</h3>
                 <div class="price">${p.price} ₽</div>
-                <button onclick="alert('Добавлено')">В корзину</button>
+                <button class="main-btn" onclick="addToCart(${index})">В корзину</button>
             </div>
         `;
     });
+
+    function addToCart(index) {
+        cart.push(products[index]);
+        updateCart();
+        alert(products[index].name + ' добавлен!');
+    }
+
+    function updateCart() {
+        const list = document.getElementById('cart-items');
+        list.innerHTML = cart.map(p => `<div>${p.name} - ${p.price} ₽</div>`).join('');
+    }
+
+    function showModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function hideModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 </script>
 
 </body>
