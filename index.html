@@ -6,171 +6,90 @@
     <title>Fitness Elite | Market</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-
-            --glass: rgba(255, 255, 255, 0.08);
-
-            --border: rgba(255, 255, 255, 0.15);
-
-            --accent: #7c3aed;
-
-        }
-
-
+        :root { --glass: rgba(255, 255, 255, 0.08); --accent: #7c3aed; }
         body { 
-
             margin: 0; 
-
-            background: #050505; 
-
-            font-family: 'Inter', sans-serif; 
-
-            color: white; 
-
-            min-height: 100vh;
-
-            background-image: 
-
-                radial-gradient(at 0% 0%, #3b82f6 0px, transparent 50%),
-
-                radial-gradient(at 100% 100%, #7c3aed 0px, transparent 50%);
-
-            background-attachment: fixed;
-
-        } 
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        
-        /* Сетка товаров */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
-        
-        .card { 
-            background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 30px; padding: 20px; text-align: center; transition: 0.4s;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://plus.unsplash.com/premium_photo-1771169912118-100894f7b937?w=1600&auto=format&fit=crop');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            font-family: 'Inter', sans-serif; color: white; min-height: 100vh;
         }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
+        .card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 20px; text-align: center; transition: 0.4s; }
         .card:hover { transform: translateY(-10px); border-color: var(--accent); }
         .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; }
-
-        body {
-    margin: 0;
-    /* Указываем картинку и затемняющий градиент */
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                url('https://plus.unsplash.com/premium_photo-1771169912118-100894f7b937?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8Mjd8fHxlbnwwfHx8fHw%3D');
-    
-    /* Делаем картинку на весь экран */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed; /* Чтобы фон не двигался при скролле */
-    
-    color: white;
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-}
-
-
-        
-        /* Плавающая корзина */
-        .fab { 
-            position: fixed; bottom: 30px; right: 30px; background: var(--accent); padding: 20px 30px;
-            border-radius: 50px; cursor: pointer; border: none; color: white; font-weight: 600; box-shadow: 0 10px 25px rgba(124,58,237,0.4); z-index: 100;
-        }
-
-        /* Футер (О нас) */
-        footer { margin-top: 80px; padding: 60px 20px; background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.1); text-align: center; }
-        .about-section { max-width: 600px; margin: 0 auto; }
+        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--accent); padding: 20px 30px; border-radius: 50px; cursor: pointer; border: none; color: white; font-weight: 600; z-index: 100; box-shadow: 0 10px 25px rgba(124,58,237,0.4); }
+        footer { margin-top: 80px; padding: 60px 20px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); text-align: center; }
+        #toast { position: fixed; bottom: 100px; right: 20px; background: var(--accent); color: white; padding: 15px 25px; border-radius: 15px; display: none; z-index: 1000; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header style="padding: 40px 0; text-align: center;">
-        <h1 style="font-size: 3rem; margin: 0;">Fitness Elite</h1>
-    </header>
-
+    <header style="padding: 40px 0; text-align: center;"><h1>Fitness Elite</h1></header>
     <div class="grid" id="product-grid"></div>
 </div>
 
 <footer>
-    <div class="about-section">
-        <h2>О нас</h2>
-        <p style="color: #888;">Мы — премиальный маркет спортивного питания. Помогаем атлетам достигать пиковых результатов с 2026 года. Только лучшее качество для вашего тела.</p>
-    </div>
+    <h2>О нас</h2>
+    <p style="color: #aaa;">Премиальный маркет спортивного питания. Качество, проверенное временем.</p>
 </footer>
 
-<button class="fab" onclick="alert('Корзина пока пуста!')">🛒 Корзина</button>
+<button class="fab" onclick="openModal()">🛒 Корзина (<span id="count">0</span>)</button>
+<div id="toast">Товар добавлен!</div>
+
+<div class="modal" id="cart-modal">
+    <div class="modal-content">
+        <h2>Ваша корзина</h2>
+        <div id="cart-items-list" style="margin: 20px 0; text-align: left;"></div>
+        <button onclick="closeModal()" style="background: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer;">Закрыть</button>
+    </div>
+</div>
 
 <script>
     const products = [
-        {name: "Протеин", price: "2 500 ₸", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2hleSUyMHByb3RlaW58ZW58MHx8MHx8fDA%3D"},
-        {name: "Креатин", price: "1 200 ₸", img: "https://images.unsplash.com/photo-1693996045435-af7c48b9cafb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Q3JlYXRpbmV8ZW58MHx8MHx8fDA%3D"},
-        {name: "Предтрен", price: "3 500 ₸", img: "https://images.unsplash.com/photo-1693996047008-1b6210099be1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJlJTIwd29ya291dHxlbnwwfHwwfHx8MA%3D%3D"},
-        {name: "Протеиновый батончик", price: "150 ₸", img: "https://images.unsplash.com/photo-1621057621391-7ed446a24b41?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvdGVpbiUyMGJhcnxlbnwwfHwwfHx8MA%3D%3D"},
-        {name: "BCAA", price: "1 800 ₸", img: "https://images.unsplash.com/photo-1709976142774-ce1ef41a8378?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QkNBQXxlbnwwfHwwfHx8MA%3D%3D"},
-        {name: "Витамины", price: "900 ₸", img: "https://images.unsplash.com/photo-1712217624538-acb689745b8f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fERhaWx5JTIwVml0YW1pbnN8ZW58MHx8MHx8fDA%3D"},
-        {name: "Энергетик", price: "500 ₸", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZW5lcmd5JTIwZHJpbmt8ZW58MHx8MHx8fDA%3D"},
-        {name: "Omega-3", price: "1 100 ₸", img: "https://images.unsplash.com/photo-1693996047034-311ab7656691?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8T21lZ2EtM3xlbnwwfHwwfHx8MA%3D%3D"}
+        {name: "Протеин", price: "2 500 ₸", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500"},
+        {name: "Креатин", price: "1 200 ₸", img: "https://images.unsplash.com/photo-1693996045435-af7c48b9cafb?w=500"},
+        {name: "Предтрен", price: "3 500 ₸", img: "https://images.unsplash.com/photo-1693996047008-1b6210099be1?w=500"},
+        {name: "Батончик", price: "150 ₸", img: "https://images.unsplash.com/photo-1621057621391-7ed446a24b41?w=500"},
+        {name: "BCAA", price: "1 800 ₸", img: "https://images.unsplash.com/photo-1709976142774-ce1ef41a8378?w=500"},
+        {name: "Витамины", price: "900 ₸", img: "https://images.unsplash.com/photo-1712217624538-acb689745b8f?w=500"},
+        {name: "Энергетик", price: "500 ₸", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500"},
+        {name: "Omega-3", price: "1 100 ₸", img: "https://images.unsplash.com/photo-1693996047034-311ab7656691?w=500"}
     ];
 
+    let cart = [];
     const grid = document.getElementById('product-grid');
-    products.forEach(p => {
+
+    products.forEach((p, i) => {
         grid.innerHTML += `
             <div class="card">
-                <img src="${p.img}" alt="${p.name}">
+                <img src="${p.img}">
                 <h3>${p.name}</h3>
-                <p style="color: #a5b4fc; font-weight: 700; font-size: 18px;">${p.price}</p>
-                <button style="background: white; border: none; padding: 12px; border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer;">В корзину</button>
+                <p style="color: #a5b4fc; font-weight: 700;">${p.price}</p>
+                <button onclick="addToCart(${i})" style="background: white; border: none; padding: 12px; border-radius: 12px; width: 100%; cursor: pointer;">В корзину</button>
             </div>
         `;
     });
-</script>
 
-
-    <style>
-    /* Стиль для красивого уведомления */
-    #toast {
-        position: fixed; bottom: 100px; right: 20px; background: #7c3aed; color: white;
-        padding: 15px 25px; border-radius: 15px; display: none; opacity: 0;
-        transition: opacity 0.3s; z-index: 1000; font-weight: 600;
-    }
-</style>
-
-<div id="toast">Товар добавлен в корзину!</div>
-
-<script>
-    let cart = [];
-
-    // Эта функция добавит товар и обновит кнопку
-    function addToCart(name, price) {
-        cart.push({name, price});
-        document.querySelector('.fab').innerText = `🛒 Корзина (${cart.length})`;
-
+    function addToCart(index) {
+        cart.push(products[index]);
+        document.getElementById('count').innerText = cart.length;
         const toast = document.getElementById('toast');
         toast.style.display = 'block';
-        toast.style.opacity = '1';
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.style.display = 'none', 300);
-        }, 2000);
+        setTimeout(() => toast.style.display = 'none', 2000);
     }
 
-    // ВАЖНО: Мы не переназначаем .fab напрямую, а используем addEventListener
-    // чтобы не "сломать" то, что было раньше.
-    document.querySelector('.fab').addEventListener('click', function() {
-        if (cart.length === 0) {
-            alert('Корзина пока пуста!');
-        } else {
-            let list = cart.map(item => `${item.name} — ${item.price}`).join('\n');
-            alert('Ваши товары:\n\n' + list);
-        }
-    });
+    function openModal() {
+        const list = document.getElementById('cart-items-list');
+        list.innerHTML = cart.length === 0 ? "Корзина пуста" : cart.map(p => `<div>${p.name} - ${p.price}</div>`).join('');
+        document.getElementById('cart-modal').style.display = 'flex';
+    }
 
-    // Навешиваем клик на кнопки товаров
-    const cards = document.querySelectorAll('.card');
-    products.forEach((p, index) => {
-        const btn = cards[index].querySelector('button');
-        btn.onclick = () => addToCart(p.name, p.price);
-    });
+    function closeModal() { document.getElementById('cart-modal').style.display = 'none'; }
 </script>
-    
-    
+
 </body>
 </html>
