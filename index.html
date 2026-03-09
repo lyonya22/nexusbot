@@ -123,5 +123,61 @@
     });
 </script>
 
+
+    <style>
+    /* Стиль для красивого уведомления */
+    #toast {
+        position: fixed; bottom: 100px; right: 20px; background: #7c3aed; color: white;
+        padding: 15px 25px; border-radius: 15px; display: none; opacity: 0;
+        transition: opacity 0.3s; z-index: 1000; font-weight: 600;
+    }
+</style>
+
+<div id="toast">Товар добавлен в корзину!</div>
+
+<script>
+    let cart = [];
+
+    // Функция добавления в корзину
+    function addToCart(name, price) {
+        cart.push({name, price});
+        
+        // Обновляем текст кнопки корзины
+        document.querySelector('.fab').innerText = `🛒 Корзина (${cart.length})`;
+
+        // Показываем красивое уведомление
+        const toast = document.getElementById('toast');
+        toast.style.display = 'block';
+        toast.style.opacity = '1';
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.style.display = 'none', 300);
+        }, 2000);
+    }
+
+    // Переписываем генерацию карточек, чтобы кнопка вызывала функцию
+    // (Находим твой существующий цикл и добавляем onclick)
+    const cards = document.querySelectorAll('.card');
+    products.forEach((p, index) => {
+        const btn = cards[index].querySelector('button');
+        btn.onclick = () => addToCart(p.name, p.price);
+    });
+
+    // Улучшаем открытие корзины
+    document.querySelector('.fab').onclick = () => {
+        if (cart.length === 0) {
+            alert('Корзина пока пуста!');
+        } else {
+            let list = cart.map(item => `${item.name} — ${item.price}`).join('\n');
+            alert('Ваши товары:\n\n' + list);
+        }
+    };
+</script>
+
+
+    
+
+    
 </body>
 </html>
