@@ -7,12 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --glass: rgba(255, 255, 255, 0.08); --accent: #7c3aed; }
-        body { margin: 0; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1713023811360-d3203bc92c77?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzB8fGltYWdlJTIwYmFja2dyb3VuZCUyMDNkfGVufDB8fDB8fHww'); background-size: cover; background-attachment: fixed; font-family: 'Inter', sans-serif; color: white; min-height: 100vh; }
+        body { margin: 0; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://plus.unsplash.com/premium_photo-1771169912118-100894f7b937?w=1600'); background-size: cover; background-attachment: fixed; font-family: 'Inter', sans-serif; color: white; min-height: 100vh; }
         .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .filters { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; }
+        .filters { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
         .filter-btn { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
         .filter-btn.active { background: var(--accent); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
         .card { background: var(--glass); backdrop-filter: blur(20px); border-radius: 25px; padding: 20px; text-align: center; transition: 0.4s; }
         .card:hover { transform: translateY(-8px); border: 1px solid var(--accent); }
         .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; }
@@ -28,10 +28,9 @@
     <header style="text-align: center; padding: 40px 0;"><h1>Fitness Elite</h1></header>
     
     <div class="filters">
-        <button class="filter-btn active" onclick="filterProducts('Все', this)">Все</button>
-        <button class="filter-btn" onclick="filterProducts('Протеин', this)">Протеин</button>
-        <button class="filter-btn" onclick="filterProducts('Витамины', this)">Витамины</button>
-        <button class="filter-btn" onclick="filterProducts('Энергия', this)">Энергия</button>
+        <button class="filter-btn active" onclick="renderProducts('Все', this)">Все</button>
+        <button class="filter-btn" onclick="renderProducts('Протеин', this)">Протеин</button>
+        <button class="filter-btn" onclick="renderProducts('Энергия', this)">Энергия</button>
     </div>
 
     <div class="grid" id="product-grid"></div>
@@ -50,38 +49,37 @@
 
 <script>
     const products = [
-        {name: "Whey Gold", price: 2500, category: "Протеин", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500"},
-        {name: "Casein Night", price: 2800, category: "Протеин", img: "https://images.unsplash.com/photo-1579722076155-ac82103f6f36?w=500"},
-        {name: "Vitamin D3", price: 900, category: "Витамины", img: "https://images.unsplash.com/photo-1712217624538-acb689745b8f?w=500"},
-        {name: "Omega-3", price: 1100, category: "Витамины", img: "https://images.unsplash.com/photo-1693996047034-311ab7656691?w=500"},
-        {name: "Energy Drink", price: 500, category: "Энергия", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500"},
-        {name: "Pre-Workout X", price: 3500, category: "Энергия", img: "https://images.unsplash.com/photo-1693996047008-1b6210099be1?w=500"}
+        {name: "Whey Gold", flavor: "Печенье-крем", price: 2500, category: "Протеин", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500"},
+        {name: "Whey Gold", flavor: "Двойной шоколад", price: 2500, category: "Протеин", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500"},
+        {name: "Casein Night", flavor: "Клубничный милкшейк", price: 2800, category: "Протеин", img: "https://images.unsplash.com/photo-1579722076155-ac82103f6f36?w=500"},
+        {name: "Energy Drink", flavor: "Тропический взрыв", price: 500, category: "Энергия", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500"},
+        {name: "Energy Drink", flavor: "Ледяная вишня", price: 500, category: "Энергия", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500"},
+        {name: "Pre-Workout X", flavor: "Зеленое яблоко", price: 3500, category: "Энергия", img: "https://images.unsplash.com/photo-1693996047008-1b6210099be1?w=500"}
     ];
 
     let cart = [];
     const grid = document.getElementById('product-grid');
 
-    function renderProducts(filter = "Все") {
+    function renderProducts(filter = "Все", btn = null) {
+        if(btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
         grid.innerHTML = "";
         products.filter(p => filter === "Все" || p.category === filter).forEach((p, i) => {
             grid.innerHTML += `
                 <div class="card">
                     <img src="${p.img}">
                     <h3>${p.name}</h3>
-                    <p style="color: #a5b4fc; font-weight: 700;">${p.price} ₸</p>
-                    <button onclick="addToCart(${products.indexOf(p)})" style="background: white; border: none; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer;">В корзину</button>
+                    <p style="margin:0; font-size: 14px; opacity: 0.8;">Вкус: ${p.flavor}</p>
+                    <p style="color: #a5b4fc; font-weight: 700; font-size: 18px;">${p.price} ₸</p>
+                    <button onclick="addToCart('${p.name}', '${p.flavor}', ${p.price})" style="background: white; border: none; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer;">В корзину</button>
                 </div>`;
         });
     }
 
-    function filterProducts(cat, btn) {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderProducts(cat);
-    }
-
-    function addToCart(index) {
-        cart.push(products[index]);
+    function addToCart(name, flavor, price) {
+        cart.push({name, flavor, price});
         document.getElementById('count').innerText = cart.length;
         const fab = document.querySelector('.fab');
         fab.classList.add('animate');
@@ -91,7 +89,7 @@
     function openModal() {
         const list = document.getElementById('cart-list');
         const total = cart.reduce((sum, item) => sum + item.price, 0);
-        list.innerHTML = cart.length === 0 ? "Корзина пуста" : cart.map(p => `<div>${p.name} — ${p.price} ₸</div>`).join('');
+        list.innerHTML = cart.length === 0 ? "Корзина пуста" : cart.map(p => `<div>${p.name} (${p.flavor}) — ${p.price} ₸</div>`).join('');
         document.getElementById('total-price').innerText = `Итого: ${total} ₸`;
         document.getElementById('cart-modal').style.display = 'flex';
     }
