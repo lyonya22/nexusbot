@@ -7,88 +7,98 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --glass: rgba(255, 255, 255, 0.08); --accent: #7c3aed; }
-        body { 
-            margin: 0; 
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1676022763096-a1ad12b2e370?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGltYWdlJTIwYmFja2dyb3VuZCUyMDNkfGVufDB8fDB8fHww');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            font-family: 'Inter', sans-serif; color: white; min-height: 100vh;
-        }
+        body { margin: 0; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1713023811360-d3203bc92c77?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzB8fGltYWdlJTIwYmFja2dyb3VuZCUyMDNkfGVufDB8fDB8fHww'); background-size: cover; background-attachment: fixed; font-family: 'Inter', sans-serif; color: white; min-height: 100vh; }
         .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
-        .card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 20px; text-align: center; transition: 0.4s; }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent); }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; }
-        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--accent); padding: 20px 30px; border-radius: 50px; cursor: pointer; border: none; color: white; font-weight: 600; z-index: 100; box-shadow: 0 10px 25px rgba(124,58,237,0.4); }
-        footer { margin-top: 80px; padding: 60px 20px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); text-align: center; }
-        #toast { position: fixed; bottom: 100px; right: 20px; background: var(--accent); color: white; padding: 15px 25px; border-radius: 15px; display: none; z-index: 1000; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; }
+        .filters { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; }
+        .filter-btn { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+        .filter-btn.active { background: var(--accent); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
+        .card { background: var(--glass); backdrop-filter: blur(20px); border-radius: 25px; padding: 20px; text-align: center; transition: 0.4s; }
+        .card:hover { transform: translateY(-8px); border: 1px solid var(--accent); }
+        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; }
+        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--accent); padding: 20px 30px; border-radius: 50px; cursor: pointer; border: none; color: white; font-weight: 700; z-index: 100; box-shadow: 0 10px 25px rgba(124,58,237,0.4); transition: transform 0.2s; }
+        .fab.animate { transform: scale(1.1); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: #1a1a1a; padding: 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--accent); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header style="padding: 40px 0; text-align: center;"><h1>Fitness Elite</h1></header>
+    <header style="text-align: center; padding: 40px 0;"><h1>Fitness Elite</h1></header>
+    
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterProducts('Все', this)">Все</button>
+        <button class="filter-btn" onclick="filterProducts('Протеин', this)">Протеин</button>
+        <button class="filter-btn" onclick="filterProducts('Витамины', this)">Витамины</button>
+        <button class="filter-btn" onclick="filterProducts('Энергия', this)">Энергия</button>
+    </div>
+
     <div class="grid" id="product-grid"></div>
 </div>
 
-<footer>
-    <h2>О нас</h2>
-    <p style="color: #aaa;">Премиальный маркет спортивного питания. Качество, проверенное временем.</p>
-</footer>
-
 <button class="fab" onclick="openModal()">🛒 Корзина (<span id="count">0</span>)</button>
-<div id="toast">Товар добавлен!</div>
 
 <div class="modal" id="cart-modal">
     <div class="modal-content">
         <h2>Ваша корзина</h2>
-        <div id="cart-items-list" style="margin: 20px 0; text-align: left;"></div>
+        <div id="cart-list" style="text-align: left; margin: 20px 0;"></div>
+        <h3 id="total-price">Итого: 0 ₸</h3>
         <button onclick="closeModal()" style="background: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer;">Закрыть</button>
     </div>
 </div>
 
 <script>
     const products = [
-        {name: "Протеин", price: "2 500 ₸", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500"},
-        {name: "Креатин", price: "1 200 ₸", img: "https://images.unsplash.com/photo-1693996045435-af7c48b9cafb?w=500"},
-        {name: "Предтрен", price: "3 500 ₸", img: "https://images.unsplash.com/photo-1693996047008-1b6210099be1?w=500"},
-        {name: "Батончик", price: "150 ₸", img: "https://images.unsplash.com/photo-1621057621391-7ed446a24b41?w=500"},
-        {name: "BCAA", price: "1 800 ₸", img: "https://images.unsplash.com/photo-1709976142774-ce1ef41a8378?w=500"},
-        {name: "Витамины", price: "900 ₸", img: "https://images.unsplash.com/photo-1712217624538-acb689745b8f?w=500"},
-        {name: "Энергетик", price: "500 ₸", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500"},
-        {name: "Omega-3", price: "1 100 ₸", img: "https://images.unsplash.com/photo-1693996047034-311ab7656691?w=500"}
+        {name: "Whey Gold", price: 2500, category: "Протеин", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500"},
+        {name: "Casein Night", price: 2800, category: "Протеин", img: "https://images.unsplash.com/photo-1579722076155-ac82103f6f36?w=500"},
+        {name: "Vitamin D3", price: 900, category: "Витамины", img: "https://images.unsplash.com/photo-1712217624538-acb689745b8f?w=500"},
+        {name: "Omega-3", price: 1100, category: "Витамины", img: "https://images.unsplash.com/photo-1693996047034-311ab7656691?w=500"},
+        {name: "Energy Drink", price: 500, category: "Энергия", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500"},
+        {name: "Pre-Workout X", price: 3500, category: "Энергия", img: "https://images.unsplash.com/photo-1693996047008-1b6210099be1?w=500"}
     ];
 
     let cart = [];
     const grid = document.getElementById('product-grid');
 
-    products.forEach((p, i) => {
-        grid.innerHTML += `
-            <div class="card">
-                <img src="${p.img}">
-                <h3>${p.name}</h3>
-                <p style="color: #a5b4fc; font-weight: 700;">${p.price}</p>
-                <button onclick="addToCart(${i})" style="background: white; border: none; padding: 12px; border-radius: 12px; width: 100%; cursor: pointer;">В корзину</button>
-            </div>
-        `;
-    });
+    function renderProducts(filter = "Все") {
+        grid.innerHTML = "";
+        products.filter(p => filter === "Все" || p.category === filter).forEach((p, i) => {
+            grid.innerHTML += `
+                <div class="card">
+                    <img src="${p.img}">
+                    <h3>${p.name}</h3>
+                    <p style="color: #a5b4fc; font-weight: 700;">${p.price} ₸</p>
+                    <button onclick="addToCart(${products.indexOf(p)})" style="background: white; border: none; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer;">В корзину</button>
+                </div>`;
+        });
+    }
+
+    function filterProducts(cat, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderProducts(cat);
+    }
 
     function addToCart(index) {
         cart.push(products[index]);
         document.getElementById('count').innerText = cart.length;
-        const toast = document.getElementById('toast');
-        toast.style.display = 'block';
-        setTimeout(() => toast.style.display = 'none', 2000);
+        const fab = document.querySelector('.fab');
+        fab.classList.add('animate');
+        setTimeout(() => fab.classList.remove('animate'), 200);
     }
 
     function openModal() {
-        const list = document.getElementById('cart-items-list');
-        list.innerHTML = cart.length === 0 ? "Корзина пуста" : cart.map(p => `<div>${p.name} - ${p.price}</div>`).join('');
+        const list = document.getElementById('cart-list');
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        list.innerHTML = cart.length === 0 ? "Корзина пуста" : cart.map(p => `<div>${p.name} — ${p.price} ₸</div>`).join('');
+        document.getElementById('total-price').innerText = `Итого: ${total} ₸`;
         document.getElementById('cart-modal').style.display = 'flex';
     }
 
     function closeModal() { document.getElementById('cart-modal').style.display = 'none'; }
+
+    renderProducts();
 </script>
 
 </body>
