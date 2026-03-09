@@ -3,29 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness Market | Premium</title>
+    <title>Fitness Market | Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root { --glass: rgba(255, 255, 255, 0.08); --border: rgba(255, 255, 255, 0.1); }
-        body { margin: 0; background: #050505; color: white; font-family: 'Inter', sans-serif; min-height: 100vh; padding-bottom: 80px; }
+        body { margin: 0; background: #050505; color: white; font-family: 'Inter', sans-serif; min-height: 100vh; padding-bottom: 100px; }
 
-        /* Фон */
         .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 20% 30%, #3b82f644, transparent), radial-gradient(circle at 80% 70%, #7c3aed44, transparent); }
-
         .container { max-width: 900px; margin: 0 auto; padding: 20px; }
         
-        .header-panel { background: var(--glass); backdrop-filter: blur(20px); padding: 20px; border-radius: 30px; text-align: center; border: 1px solid var(--border); margin-bottom: 30px; }
-
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 25px; padding: 20px; text-align: center; transition: 0.3s; }
+        .card { background: var(--glass); backdrop-filter: blur(15px); border: 1px solid var(--border); border-radius: 25px; padding: 20px; text-align: center; }
         
-        button { background: white; color: black; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; }
+        /* СТИЛЬ СЕЛЕКТОРА */
+        .quantity-selector { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 15px 0; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 12px; }
+        .q-btn { background: #333; border: none; color: white; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; }
         
-        /* Плавающие кнопки */
-        .fab-container { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; }
-        .fab { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 15px 25px; border-radius: 50px; cursor: pointer; color: white; font-weight: 600; }
-
-        /* Модалка */
+        button.add-btn { background: white; color: black; border: none; padding: 12px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; }
+        
+        .fab { position: fixed; bottom: 20px; right: 20px; background: #7c3aed; padding: 15px 30px; border-radius: 50px; cursor: pointer; border: none; color: white; font-weight: 600; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); justify-content: center; align-items: center; z-index: 100; }
         .modal-content { background: #1a1a1a; padding: 30px; border-radius: 30px; width: 90%; max-width: 400px; border: 1px solid #333; }
     </style>
@@ -33,61 +29,74 @@
 <body>
 
 <div class="bg-glow"></div>
-
 <div class="container">
-    <div class="header-panel">
-        <h1 style="margin:0">Fitness Market</h1>
-    </div>
+    <div style="text-align: center; padding: 40px 0;"><h1>Fitness Market</h1></div>
     <div class="grid" id="product-grid"></div>
 </div>
 
-<div class="fab-container">
-    <button class="fab" onclick="showModal('about-modal')">О нас</button>
-    <button class="fab" onclick="showModal('cart-modal')">🛒 (<span id="cart-count">0</span>)</button>
-</div>
-
-<div class="modal" id="about-modal">
-    <div class="modal-content">
-        <h2>О нас</h2>
-        <p>Fitness Market — ваш надежный партнер в спорте с 2026 года. Качественное питание для достижения целей.</p>
-        <button onclick="closeModals()">Закрыть</button>
-    </div>
-</div>
+<button class="fab" onclick="showCart()">🛒 Корзина (<span id="cart-count">0</span>)</button>
 
 <div class="modal" id="cart-modal">
     <div class="modal-content">
-        <h2>Корзина</h2>
+        <h2>Ваш заказ</h2>
         <div id="cart-list" style="margin: 20px 0;"></div>
-        <button onclick="alert('Заказ принят!')">Оплатить</button>
-        <button onclick="closeModals()" style="background:transparent; color:#888;">Назад</button>
+        <h3 id="total-price">Итого: 0 ₽</h3>
+        <button onclick="alert('Заказ оформлен!')">Оплатить</button>
+        <button onclick="document.getElementById('cart-modal').style.display='none'" style="background:transparent; color:#888; margin-top:10px;">Назад</button>
     </div>
 </div>
 
 <script>
     const products = [
-        {name: "Whey Protein", price: 2500, icon: "🥤"},
-        {name: "Creatine Mono", price: 1200, icon: "⚡"},
-        {name: "Pre-workout", price: 3500, icon: "🔥"},
-        {name: "Protein Bar", price: 150, icon: "🍫"},
-        {name: "BCAA Powder", price: 1800, icon: "🧊"},
-        {name: "Energy Gorilla", price: 500, icon: "🔋"}
+        {id: 0, name: "Whey Protein", price: 2500, icon: "🥤", count: 0},
+        {id: 1, name: "Creatine Mono", price: 1200, icon: "⚡", count: 0},
+        {id: 2, name: "Pre-workout", price: 3500, icon: "🔥", count: 0}
     ];
 
-    let cart = [];
     const grid = document.getElementById('product-grid');
 
-    products.forEach((p, i) => {
-        grid.innerHTML += `<div class="card"><div style="font-size:40px">${p.icon}</div><h3>${p.name}</h3><p>${p.price} ₽</p><button onclick="addToCart(${i})">В корзину</button></div>`;
-    });
-
-    function addToCart(i) {
-        cart.push(products[i]);
-        document.getElementById('cart-count').innerText = cart.length;
-        alert(products[i].name + ' добавлен!');
+    function render() {
+        grid.innerHTML = '';
+        products.forEach((p, i) => {
+            grid.innerHTML += `
+                <div class="card">
+                    <div style="font-size:40px">${p.icon}</div>
+                    <h3>${p.name}</h3>
+                    <p>${p.price} ₽</p>
+                    <div class="quantity-selector">
+                        <button class="q-btn" onclick="changeCount(${i}, -1)">-</button>
+                        <span>${p.count}</span>
+                        <button class="q-btn" onclick="changeCount(${i}, 1)">+</button>
+                    </div>
+                </div>
+            `;
+        });
     }
 
-    function showModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+    function changeCount(i, delta) {
+        products[i].count = Math.max(0, products[i].count + delta);
+        render();
+        updateCount();
+    }
+
+    function updateCount() {
+        const totalItems = products.reduce((sum, p) => sum + p.count, 0);
+        document.getElementById('cart-count').innerText = totalItems;
+    }
+
+    function showCart() {
+        const list = document.getElementById('cart-list');
+        const activeItems = products.filter(p => p.count > 0);
+        if(activeItems.length === 0) { list.innerHTML = "Корзина пуста"; }
+        else {
+            list.innerHTML = activeItems.map(p => `<div>${p.name} x ${p.count} = ${p.price * p.count} ₽</div>`).join('');
+        }
+        const total = products.reduce((sum, p) => sum + (p.price * p.count), 0);
+        document.getElementById('total-price').innerText = "Итого: " + total + " ₽";
+        document.getElementById('cart-modal').style.display = 'flex';
+    }
+
+    render();
 </script>
 
 </body>
