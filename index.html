@@ -3,101 +3,393 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness Elite | Market</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>FoodExpress | Premium Delivery</title>
     <style>
-        :root { --glass: rgba(255, 255, 255, 0.08); --accent: #7c3aed; }
-        body { margin: 0; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1667832273606-c4a9e46c7d1a?w=1920&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODZ8fGltYWdlJTIwYmFja2dyb3VuZCUyMDNkfGVufDB8fDB8fHww'); background-size: cover; background-attachment: fixed; font-family: 'Inter', sans-serif; color: white; min-height: 100vh; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .filters { display: flex; gap: 10px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
-        .filter-btn { background: var(--glass); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
-        .filter-btn.active { background: var(--accent); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-        .card { background: var(--glass); backdrop-filter: blur(20px); border-radius: 25px; padding: 20px; text-align: center; transition: 0.4s; }
-        .card:hover { transform: translateY(-8px); border: 1px solid var(--accent); }
-        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 20px; margin-bottom: 15px; }
-        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--accent); padding: 20px 30px; border-radius: 50px; cursor: pointer; border: none; color: white; font-weight: 700; z-index: 100; box-shadow: 0 10px 25px rgba(124,58,237,0.4); transition: transform 0.2s; }
-        .fab.animate { transform: scale(1.1); }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: #1a1a1a; padding: 30px; border-radius: 30px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--accent); }
+        :root {
+            --primary: #ff6b00;
+            --primary-glow: rgba(255, 107, 0, 0.4);
+            --bg: #0a0a0a;
+            --card-bg: rgba(28, 28, 28, 0.7);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* АНИМАЦИИ ВЫЛЕТА */
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .animate-card {
+            animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(10, 10, 10, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo { 
+            font-size: 24px; 
+            font-weight: 900; 
+            color: var(--primary); 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+        }
+
+        nav { display: flex; gap: 25px; }
+        nav a { text-decoration: none; color: #aaa; font-size: 14px; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
+
+        .cart-trigger {
+            background: var(--glass);
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .cart-trigger:hover { border-color: var(--primary); background: rgba(255, 107, 0, 0.05); }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5%;
+            overflow: hidden;
+        }
+
+        .hero-bg-text {
+            font-size: clamp(60px, 18vw, 180px);
+            font-weight: 900;
+            opacity: 0.03;
+            position: absolute;
+            z-index: 1;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .hero p { font-size: 18px; color: #ccc; margin-top: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+
+        .hero-burger {
+            position: absolute;
+            width: clamp(300px, 40vw, 500px);
+            right: 5%;
+            z-index: 5;
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8));
+            transition: 0.8s cubic-bezier(0.2, 1, 0.2, 1);
+        }
+        .hero:hover .hero-burger { transform: translateY(-30px) rotate(-5deg) scale(1.05); }
+
+        /* MENU */
+        .menu { padding: 80px 5%; max-width: 1300px; margin: auto; }
+        .categories {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 50px;
+            overflow-x: auto;
+            padding: 10px;
+        }
+        .categories::-webkit-scrollbar { display: none; }
+
+        .categories button {
+            padding: 12px 28px;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            background: var(--glass);
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.4s;
+        }
+        .categories button.active { 
+            background: var(--primary); 
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+        }
+        .card:hover { transform: translateY(-12px); border-color: rgba(255, 107, 0, 0.3); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 25px; }
+        .card-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .price { color: var(--primary); font-size: 24px; font-weight: 800; }
+        
+        .order-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 14px;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .order-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+
+        /* ABOUT - МЯГКИЙ СТИЛЬ */
+        .about {
+            padding: 120px 10%;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+            border-top: 1px solid var(--border);
+        }
+        .about-badge {
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .about h2 { font-size: 42px; margin-bottom: 25px; }
+        .about p { max-width: 750px; margin: auto; font-size: 18px; color: #999; line-height: 1.8; }
+
+        /* MODAL & SUCCESS MESSAGE */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+        .modal-content {
+            background: #121212;
+            padding: 40px;
+            border-radius: 32px;
+            width: 90%;
+            max-width: 450px;
+            border: 1px solid var(--border);
+        }
+
+        .success-overlay {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            border-left: 4px solid #4CAF50;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            z-index: 3000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* MOBILE ADAPTATION */
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .hero { height: auto; padding: 120px 20px 60px; flex-direction: column; }
+            .hero-burger { position: relative; right: 0; width: 300px; order: -1; margin-bottom: 40px; }
+            .food-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header style="text-align: center; padding: 40px 0;"><h1>Fitness Elite</h1></header>
-    
-    <div class="filters">
-        <button class="filter-btn active" onclick="renderProducts('Все', this)">Все</button>
-        <button class="filter-btn" onclick="renderProducts('Протеин', this)">Протеин/Креатин</button>
-        <button class="filter-btn" onclick="renderProducts('Энергия', this)">Энергетики</button>
-    </div>
-
-    <div class="grid" id="product-grid"></div>
+<div class="success-overlay" id="successToast">
+    <div style="font-weight: 800; color: #4CAF50; margin-bottom: 5px;">Заказ принят!</div>
+    <div id="successMsg" style="font-size: 14px; color: #ccc;"></div>
 </div>
 
-<button class="fab" onclick="openModal()">🛒 Корзина (<span id="count">0</span>)</button>
+<header>
+    <div class="logo">FoodExpress</div>
+    <nav>
+        <a href="#menu">Меню</a>
+        <a href="#about">О нас</a>
+        <a href="#contact">Контакты</a>
+    </nav>
+    <div class="cart-trigger" onclick="toggleCart()">
+        <span style="font-size: 18px;">🛒</span>
+        <span id="cart-info">0 ₸</span>
+    </div>
+</header>
 
-<div class="modal" id="cart-modal">
+<section class="hero">
+    <div class="hero-bg-text">FRESH & JUICY</div>
+    <div class="hero-content">
+        <h1 style="font-size: 50px; margin: 0;">KING BURGER</h1>
+        <p>Премиальная мраморная говядина, секретный соус и булочка Бриошь. Вкус, который невозможно забыть.</p>
+    </div>
+    <img src="https://pngimg.com/uploads/burger_sandwich/burger_sandwich_PNG4135.png" class="hero-burger" alt="Burger">
+</section>
+
+<section class="menu" id="menu">
+    <div class="categories">
+        <button class="active" onclick="filterFood('all', this)">Все блюда</button>
+        <button onclick="filterFood('burger', this)">Бургеры</button>
+        <button onclick="filterFood('pizza', this)">Пицца</button>
+        <button onclick="filterFood('drink', this)">Напитки</button>
+    </div>
+
+    <div class="food-grid" id="foodGrid">
+        <div class="card animate-card" data-category="burger">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600">
+            <div class="card-body">
+                <div class="card-title">King Beef Premium</div>
+                <div class="price">1500 ₸</div>
+                <button class="order-btn" onclick="addToCart('King Beef', 1500)">Добавить</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="pizza">
+            <img src="https://images.unsplash.com/photo-1574071318508-1cdbad80ad50?w=600">
+            <div class="card-body">
+                <div class="card-title">Маргарита Neapolitano</div>
+                <div class="price">2500 ₸</div>
+                <button class="order-btn" onclick="addToCart('Маргарита', 2500)">Добавить</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <span class="about-badge">Since 2026</span>
+    <h2>О нашей философии</h2>
+    <p>Мы не просто доставляем еду. Мы создаем гастрономический опыт. Каждый ингредиент проходит строгий контроль качества, чтобы вы получили идеальное блюдо прямо к порогу вашего дома за 30 минут.</p>
+</section>
+
+<div class="modal" id="cartModal">
     <div class="modal-content">
-        <h2>Ваша корзина</h2>
-        <div id="cart-list" style="text-align: left; margin: 20px 0;"></div>
-        <h3 id="total-price">Итого: 0 ₸</h3>
-        <button onclick="closeModal()" style="background: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer;">Закрыть</button>
+        <h2 style="margin-top: 0; display: flex; justify-content: space-between;">
+            Корзина <span style="cursor: pointer; opacity: 0.5;" onclick="toggleCart()">✕</span>
+        </h2>
+        <div id="cartItems" style="margin: 25px 0; max-height: 300px; overflow-y: auto;">
+            </div>
+        <div style="border-top: 1px solid var(--border); padding-top: 20px;">
+            <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: 800; margin-bottom: 20px;">
+                <span>Итого:</span>
+                <span id="totalPrice">0 ₸</span>
+            </div>
+            <label style="font-size: 12px; color: #666; display: block; margin-bottom: 8px;">Способ оплаты</label>
+            <select id="payMethod" style="width: 100%; padding: 14px; border-radius: 12px; background: #222; color: white; border: 1px solid var(--border); margin-bottom: 20px;">
+                <option value="Online">Kaspi Pay</option>
+                <option value="Card">Картой курьеру</option>
+                <option value="Cash">Наличные</option>
+            </select>
+            <button class="order-btn" style="background: #4CAF50;" onclick="checkout()">Оформить заказ</button>
+        </div>
     </div>
 </div>
 
 <script>
-    const products = [
-        {name: "Протеин", flavor: "Печенье-крем", price: 2500, category: "Протеин", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500"},
-        {name: "Протеин", flavor: "Двойной шоколад", price: 2500, category: "Протеин", img: "https://images.unsplash.com/photo-1693996045899-7cf0ac0229c7?w=500"},
-        {name: "Креатин", flavor: "Клубничный милкшейк", price: 2800, category: "Протеин", img: "https://images.unsplash.com/photo-1693996045435-af7c48b9cafb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y3JlYXRpbmV8ZW58MHx8MHx8fDA%3D"},
-        {name: "Энергетик", flavor: "Тропический взрыв", price: 500, category: "Энергия", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500"},
-        {name: "Энергетик", flavor: "Ледяная вишня", price: 500, category: "Энергия", img: "https://images.unsplash.com/photo-1677177751361-0416255ff002?w=500"},
-        {name: "Предтрен", flavor: "Зеленое яблоко", price: 3500, category: "Энергия", img: "https://images.unsplash.com/photo-1693996047008-1b6210099be1?w=500"}
-    ];
-
     let cart = [];
-    const grid = document.getElementById('product-grid');
 
-    function renderProducts(filter = "Все", btn = null) {
-        if(btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-        grid.innerHTML = "";
-        products.filter(p => filter === "Все" || p.category === filter).forEach((p, i) => {
-            grid.innerHTML += `
-                <div class="card">
-                    <img src="${p.img}">
-                    <h3>${p.name}</h3>
-                    <p style="margin:0; font-size: 14px; opacity: 0.8;">Вкус: ${p.flavor}</p>
-                    <p style="color: #a5b4fc; font-weight: 700; font-size: 18px;">${p.price} ₸</p>
-                    <button onclick="addToCart('${p.name}', '${p.flavor}', ${p.price})" style="background: white; border: none; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer;">В корзину</button>
-                </div>`;
+    function addToCart(name, price) {
+        cart.push({ id: Date.now(), name, price });
+        updateUI();
+    }
+
+    function updateUI() {
+        const total = cart.reduce((s, i) => s + i.price, 0);
+        document.getElementById('cart-info').innerText = `${total} ₸`;
+        document.getElementById('totalPrice').innerText = `${total} ₸`;
+
+        const list = document.getElementById('cartItems');
+        list.innerHTML = cart.length === 0 ? '<p style="color:#666">Пока пусто...</p>' : '';
+        
+        cart.forEach(item => {
+            list.innerHTML += `
+                <div style="display:flex; justify-content:space-between; margin-bottom:15px; background:var(--glass); padding:12px; border-radius:12px;">
+                    <span>${item.name}</span>
+                    <span style="font-weight:700;">${item.price} ₸</span>
+                </div>
+            `;
         });
     }
 
-    function addToCart(name, flavor, price) {
-        cart.push({name, flavor, price});
-        document.getElementById('count').innerText = cart.length;
-        const fab = document.querySelector('.fab');
-        fab.classList.add('animate');
-        setTimeout(() => fab.classList.remove('animate'), 200);
+    function toggleCart() {
+        const m = document.getElementById('cartModal');
+        m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    function openModal() {
-        const list = document.getElementById('cart-list');
-        const total = cart.reduce((sum, item) => sum + item.price, 0);
-        list.innerHTML = cart.length === 0 ? "Корзина пуста" : cart.map(p => `<div>${p.name} (${p.flavor}) — ${p.price} ₸</div>`).join('');
-        document.getElementById('total-price').innerText = `Итого: ${total} ₸`;
-        document.getElementById('cart-modal').style.display = 'flex';
+    function filterFood(cat, btn) {
+        document.querySelectorAll('.categories button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.style.display = (cat === 'all' || card.dataset.category === cat) ? 'block' : 'none';
+            if(card.style.display === 'block') {
+                card.classList.remove('animate-card');
+                void card.offsetWidth; // Триггер рефлоу для перезапуска анимации
+                card.classList.add('animate-card');
+            }
+        });
     }
 
-    function closeModal() { document.getElementById('cart-modal').style.display = 'none'; }
-
-    renderProducts();
+    function checkout() {
+        if(cart.length === 0) return;
+        const method = document.getElementById('payMethod').value;
+        const toast = document.getElementById('successToast');
+        
+        document.getElementById('successMsg').innerText = `Оплата: ${method}. Курьер свяжется с вами через 5 минут.`;
+        toast.style.display = 'block';
+        
+        setTimeout(() => { toast.style.display = 'none'; }, 5000);
+        
+        cart = [];
+        updateUI();
+        toggleCart();
+    }
 </script>
-
 </body>
 </html>
