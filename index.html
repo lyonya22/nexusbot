@@ -26,7 +26,7 @@
             line-height: 1.5;
         }
 
-        /* АНИМАЦИИ ВЫЛЕТА */
+        /* АНИМАЦИИ */
         @keyframes cardEntrance {
             from { opacity: 0; transform: translateY(40px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -36,7 +36,6 @@
             animation: cardEntrance 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
-        /* HEADER */
         header {
             display: flex;
             justify-content: space-between;
@@ -50,17 +49,7 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .logo { 
-            font-size: 24px; 
-            font-weight: 900; 
-            color: var(--primary); 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-        }
-
-        nav { display: flex; gap: 25px; }
-        nav a { text-decoration: none; color: #aaa; font-size: 14px; transition: 0.3s; }
-        nav a:hover { color: var(--primary); }
+        .logo { font-size: 24px; font-weight: 900; color: var(--primary); text-transform: uppercase; }
 
         .cart-trigger {
             background: var(--glass);
@@ -68,55 +57,12 @@
             border-radius: 12px;
             cursor: pointer;
             border: 1px solid var(--border);
-            transition: 0.3s;
             display: flex;
             gap: 10px;
             align-items: center;
         }
-        .cart-trigger:hover { border-color: var(--primary); background: rgba(255, 107, 0, 0.05); }
 
-        /* HERO */
-        .hero {
-            position: relative;
-            height: 70vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 5%;
-            overflow: hidden;
-        }
-
-        .hero-bg-text {
-            font-size: clamp(60px, 18vw, 180px);
-            font-weight: 900;
-            opacity: 0.03;
-            position: absolute;
-            z-index: 1;
-            white-space: nowrap;
-            user-select: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            max-width: 600px;
-        }
-
-        .hero p { font-size: 18px; color: #ccc; margin-top: 20px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-
-        .hero-burger {
-            position: absolute;
-            width: clamp(300px, 40vw, 500px);
-            right: 5%;
-            z-index: 5;
-            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.8));
-            transition: 0.8s cubic-bezier(0.2, 1, 0.2, 1);
-        }
-        .hero:hover .hero-burger { transform: translateY(-30px) rotate(-5deg) scale(1.05); }
-
-        /* MENU */
-        .menu { padding: 80px 5%; max-width: 1300px; margin: auto; }
+        .menu { padding: 40px 5%; max-width: 1300px; margin: auto; }
         .categories {
             display: flex;
             gap: 12px;
@@ -125,7 +71,6 @@
             overflow-x: auto;
             padding: 10px;
         }
-        .categories::-webkit-scrollbar { display: none; }
 
         .categories button {
             padding: 12px 28px;
@@ -134,9 +79,10 @@
             background: var(--glass);
             color: white;
             cursor: pointer;
-            font-weight: 500;
             transition: 0.4s;
+            white-space: nowrap;
         }
+
         .categories button.active { 
             background: var(--primary); 
             border-color: var(--primary);
@@ -145,8 +91,8 @@
 
         .food-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .card {
@@ -155,67 +101,27 @@
             overflow: hidden;
             border: 1px solid var(--border);
             transition: 0.4s;
-            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
         }
-        .card:hover { transform: translateY(-12px); border-color: rgba(255, 107, 0, 0.3); }
-        .card img { width: 100%; height: 220px; object-fit: cover; }
-        .card-body { padding: 25px; }
-        .card-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-        .price { color: var(--primary); font-size: 24px; font-weight: 800; }
-        
+
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .price { color: var(--primary); font-size: 22px; font-weight: 800; }
+
         .order-btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             margin-top: 15px;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             background: var(--primary);
             color: white;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
-        }
-        .order-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
-
-        /* ABOUT - МЯГКИЙ СТИЛЬ */
-        .about {
-            padding: 120px 10%;
-            text-align: center;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
-            border-top: 1px solid var(--border);
-        }
-        .about-badge {
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 12px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            display: block;
-        }
-        .about h2 { font-size: 42px; margin-bottom: 25px; }
-        .about p { max-width: 750px; margin: auto; font-size: 18px; color: #999; line-height: 1.8; }
-
-        /* MODAL & SUCCESS MESSAGE */
-        .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            backdrop-filter: blur(10px);
-        }
-        .modal-content {
-            background: #121212;
-            padding: 40px;
-            border-radius: 32px;
-            width: 90%;
-            max-width: 450px;
-            border: 1px solid var(--border);
         }
 
+        /* ИСПРАВЛЕНИЕ СКРИНШОТА: ВСТРОЕННОЕ УВЕДОМЛЕНИЕ */
         .success-overlay {
             position: fixed;
             top: 20px;
@@ -235,12 +141,24 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* MOBILE ADAPTATION */
-        @media (max-width: 768px) {
-            nav { display: none; }
-            .hero { height: auto; padding: 120px 20px 60px; flex-direction: column; }
-            .hero-burger { position: relative; right: 0; width: 300px; order: -1; margin-bottom: 40px; }
-            .food-grid { grid-template-columns: 1fr; }
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: #121212;
+            padding: 30px;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 450px;
+            border: 1px solid var(--border);
         }
     </style>
 </head>
@@ -253,79 +171,200 @@
 
 <header>
     <div class="logo">FoodExpress</div>
-    <nav>
-        <a href="#menu">Меню</a>
-        <a href="#about">О нас</a>
-        <a href="#contact">Контакты</a>
-    </nav>
     <div class="cart-trigger" onclick="toggleCart()">
-        <span style="font-size: 18px;">🛒</span>
+        <span>🛒</span>
         <span id="cart-info">0 ₸</span>
     </div>
 </header>
 
-<section class="hero">
-    <div class="hero-bg-text">FRESH & JUICY</div>
-    <div class="hero-content">
-        <h1 style="font-size: 50px; margin: 0;">KING BURGER</h1>
-        <p>Премиальная мраморная говядина, секретный соус и булочка Бриошь. Вкус, который невозможно забыть.</p>
-    </div>
-    <img src="https://pngimg.com/uploads/burger_sandwich/burger_sandwich_PNG4135.png" class="hero-burger" alt="Burger">
-</section>
-
 <section class="menu" id="menu">
     <div class="categories">
-        <button class="active" onclick="filterFood('all', this)">Все блюда</button>
+        <button class="active" onclick="filterFood('all', this)">Все</button>
         <button onclick="filterFood('burger', this)">Бургеры</button>
         <button onclick="filterFood('pizza', this)">Пицца</button>
+        <button onclick="filterFood('sushi', this)">Суши</button>
         <button onclick="filterFood('drink', this)">Напитки</button>
     </div>
 
     <div class="food-grid" id="foodGrid">
         <div class="card animate-card" data-category="burger">
-            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600">
+            <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=500">
             <div class="card-body">
-                <div class="card-title">King Beef Premium</div>
-                <div class="price">1500 ₸</div>
-                <button class="order-btn" onclick="addToCart('King Beef', 1500)">Добавить</button>
+                <div class="card-title">Двойной куриный</div><div class="price">1800 ₸</div>
+                <button class="order-btn" onclick="addToCart('Двойной куриный', 1800)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="burger">
+            <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500">
+            <div class="card-body">
+                <div class="card-title">Бургер Mexico</div><div class="price">1900 ₸</div>
+                <button class="order-btn" onclick="addToCart('Бургер Mexico', 1900)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="burger">
+            <img src="https://images.unsplash.com/photo-1512152272829-e3139592d56f?w=500">
+            <div class="card-body">
+                <div class="card-title">Mini Бургер</div><div class="price">900 ₸</div>
+                <button class="order-btn" onclick="addToCart('Mini Бургер', 900)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="burger">
+            <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500">
+            <div class="card-body">
+                <div class="card-title">Бургер с яйцом</div><div class="price">1700 ₸</div>
+                <button class="order-btn" onclick="addToCart('Бургер с яйцом', 1700)">Заказать</button>
+            </div>
+        </div>
+
+        <div class="card animate-card" data-category="pizza">
+            <img src="https://images.unsplash.com/photo-1593504049359-74330189a355?w=500">
+            <div class="card-body">
+                <div class="card-title">Салями</div><div class="price">2800 ₸</div>
+                <button class="order-btn" onclick="addToCart('Пицца Салями', 2800)">Заказать</button>
             </div>
         </div>
         <div class="card animate-card" data-category="pizza">
-            <img src="https://images.unsplash.com/photo-1574071318508-1cdbad80ad50?w=600">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500">
             <div class="card-body">
-                <div class="card-title">Маргарита Neapolitano</div>
-                <div class="price">2500 ₸</div>
-                <button class="order-btn" onclick="addToCart('Маргарита', 2500)">Добавить</button>
+                <div class="card-title">Песто</div><div class="price">3000 ₸</div>
+                <button class="order-btn" onclick="addToCart('Пицца Песто', 3000)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="pizza">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500">
+            <div class="card-body">
+                <div class="card-title">Курица с ананасами</div><div class="price">2900 ₸</div>
+                <button class="order-btn" onclick="addToCart('Курица с ананасами', 2900)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="pizza">
+            <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500">
+            <div class="card-body">
+                <div class="card-title">С грибами</div><div class="price">2600 ₸</div>
+                <button class="order-btn" onclick="addToCart('С грибами', 2600)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="pizza">
+            <img src="https://images.unsplash.com/photo-1573821663912-569905455b1c?w=500">
+            <div class="card-body">
+                <div class="card-title">4 сыра</div><div class="price">3200 ₸</div>
+                <button class="order-btn" onclick="addToCart('Пицца 4 сыра', 3200)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="pizza">
+            <img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=500">
+            <div class="card-body">
+                <div class="card-title">Четыре сезона</div><div class="price">3100 ₸</div>
+                <button class="order-btn" onclick="addToCart('Четыре сезона', 3100)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="pizza">
+            <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=500">
+            <div class="card-body">
+                <div class="card-title">Пицца Mexico</div><div class="price">3000 ₸</div>
+                <button class="order-btn" onclick="addToCart('Пицца Mexico', 3000)">Заказать</button>
+            </div>
+        </div>
+
+        <div class="card animate-card" data-category="sushi">
+            <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=500">
+            <div class="card-body">
+                <div class="card-title">Филадельфия</div><div class="price">2500 ₸</div>
+                <button class="order-btn" onclick="addToCart('Филадельфия', 2500)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="sushi">
+            <img src="https://images.unsplash.com/photo-1559700015-8d440958544e?w=500">
+            <div class="card-body">
+                <div class="card-title">Калифорния</div><div class="price">2400 ₸</div>
+                <button class="order-btn" onclick="addToCart('Калифорния', 2400)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="sushi">
+            <img src="https://images.unsplash.com/photo-1617196034183-421b4917c92d?w=500">
+            <div class="card-body">
+                <div class="card-title">Запеченный ролл курица</div><div class="price">2200 ₸</div>
+                <button class="order-btn" onclick="addToCart('Ролл курица', 2200)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="sushi">
+            <img src="https://images.unsplash.com/photo-1583623025817-d180a2221d0a?w=500">
+            <div class="card-body">
+                <div class="card-title">Запеченный ролл краб</div><div class="price">2300 ₸</div>
+                <button class="order-btn" onclick="addToCart('Ролл краб', 2300)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="sushi">
+            <img src="https://images.unsplash.com/photo-1581335035540-3023e1645e75?w=500">
+            <div class="card-body">
+                <div class="card-title">Суши Бургер</div><div class="price">2800 ₸</div>
+                <button class="order-btn" onclick="addToCart('Суши Бургер', 2800)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="sushi">
+            <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=500">
+            <div class="card-body">
+                <div class="card-title">Суши с лососем</div><div class="price">1200 ₸</div>
+                <button class="order-btn" onclick="addToCart('Суши лосось', 1200)">Заказать</button>
+            </div>
+        </div>
+
+        <div class="card animate-card" data-category="drink">
+            <img src="https://images.unsplash.com/photo-1625772290748-39126d79495e?w=500">
+            <div class="card-body">
+                <div class="card-title">Спрайт</div><div class="price">450 ₸</div>
+                <button class="order-btn" onclick="addToCart('Спрайт', 450)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="drink">
+            <img src="https://images.unsplash.com/photo-1624517452488-04869289c4ca?w=500">
+            <div class="card-body">
+                <div class="card-title">Фанта</div><div class="price">450 ₸</div>
+                <button class="order-btn" onclick="addToCart('Фанта', 450)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="drink">
+            <img src="https://images.unsplash.com/photo-1560023907-5f339617ea30?w=500">
+            <div class="card-body">
+                <div class="card-title">Вода</div><div class="price">300 ₸</div>
+                <button class="order-btn" onclick="addToCart('Вода', 300)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="drink">
+            <img src="https://images.unsplash.com/photo-1551731146-cbf777d47263?w=500">
+            <div class="card-body">
+                <div class="card-title">Газированная вода</div><div class="price">300 ₸</div>
+                <button class="order-btn" onclick="addToCart('Газ. вода', 300)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="drink">
+            <img src="https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=500">
+            <div class="card-body">
+                <div class="card-title">Айран</div><div class="price">400 ₸</div>
+                <button class="order-btn" onclick="addToCart('Айран', 400)">Заказать</button>
+            </div>
+        </div>
+        <div class="card animate-card" data-category="drink">
+            <img src="https://images.unsplash.com/photo-1622484210820-c41c0f7392fe?w=500">
+            <div class="card-body">
+                <div class="card-title">GORILLA</div><div class="price">650 ₸</div>
+                <button class="order-btn" onclick="addToCart('GORILLA', 650)">Заказать</button>
             </div>
         </div>
     </div>
 </section>
 
-<section class="about" id="about">
-    <span class="about-badge">Since 2026</span>
-    <h2>О нашей философии</h2>
-    <p>Мы не просто доставляем еду. Мы создаем гастрономический опыт. Каждый ингредиент проходит строгий контроль качества, чтобы вы получили идеальное блюдо прямо к порогу вашего дома за 30 минут.</p>
-</section>
-
 <div class="modal" id="cartModal">
     <div class="modal-content">
-        <h2 style="margin-top: 0; display: flex; justify-content: space-between;">
-            Корзина <span style="cursor: pointer; opacity: 0.5;" onclick="toggleCart()">✕</span>
-        </h2>
-        <div id="cartItems" style="margin: 25px 0; max-height: 300px; overflow-y: auto;">
-            </div>
-        <div style="border-top: 1px solid var(--border); padding-top: 20px;">
-            <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: 800; margin-bottom: 20px;">
-                <span>Итого:</span>
-                <span id="totalPrice">0 ₸</span>
-            </div>
-            <label style="font-size: 12px; color: #666; display: block; margin-bottom: 8px;">Способ оплаты</label>
-            <select id="payMethod" style="width: 100%; padding: 14px; border-radius: 12px; background: #222; color: white; border: 1px solid var(--border); margin-bottom: 20px;">
+        <h2 style="margin:0 0 20px; display:flex; justify-content:space-between;">Корзина <span onclick="toggleCart()" style="cursor:pointer; opacity:0.5;">✕</span></h2>
+        <div id="cartItems" style="max-height:250px; overflow-y:auto; margin-bottom:20px;"></div>
+        <div style="border-top:1px solid var(--border); padding-top:15px;">
+            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:18px; margin-bottom:15px;">Итого: <span id="totalPrice">0 ₸</span></div>
+            <select id="payMethod" style="width:100%; padding:12px; border-radius:10px; background:#222; color:white; border:1px solid var(--border); margin-bottom:15px;">
                 <option value="Online">Kaspi Pay</option>
-                <option value="Card">Картой курьеру</option>
                 <option value="Cash">Наличные</option>
             </select>
-            <button class="order-btn" style="background: #4CAF50;" onclick="checkout()">Оформить заказ</button>
+            <button class="order-btn" style="background:#4CAF50;" onclick="checkout()">Оформить</button>
         </div>
     </div>
 </div>
@@ -342,17 +381,10 @@
         const total = cart.reduce((s, i) => s + i.price, 0);
         document.getElementById('cart-info').innerText = `${total} ₸`;
         document.getElementById('totalPrice').innerText = `${total} ₸`;
-
         const list = document.getElementById('cartItems');
-        list.innerHTML = cart.length === 0 ? '<p style="color:#666">Пока пусто...</p>' : '';
-        
+        list.innerHTML = cart.length === 0 ? '<p style="color:#666">Пусто</p>' : '';
         cart.forEach(item => {
-            list.innerHTML += `
-                <div style="display:flex; justify-content:space-between; margin-bottom:15px; background:var(--glass); padding:12px; border-radius:12px;">
-                    <span>${item.name}</span>
-                    <span style="font-weight:700;">${item.price} ₸</span>
-                </div>
-            `;
+            list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; padding:10px; background:var(--glass); border-radius:10px;"><span>${item.name}</span><strong>${item.price} ₸</strong></div>`;
         });
     }
 
@@ -364,15 +396,9 @@
     function filterFood(cat, btn) {
         document.querySelectorAll('.categories button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
-            card.style.display = (cat === 'all' || card.dataset.category === cat) ? 'block' : 'none';
-            if(card.style.display === 'block') {
-                card.classList.remove('animate-card');
-                void card.offsetWidth; // Триггер рефлоу для перезапуска анимации
-                card.classList.add('animate-card');
-            }
+            card.style.display = (cat === 'all' || card.dataset.category === cat) ? 'flex' : 'none';
         });
     }
 
@@ -380,15 +406,10 @@
         if(cart.length === 0) return;
         const method = document.getElementById('payMethod').value;
         const toast = document.getElementById('successToast');
-        
-        document.getElementById('successMsg').innerText = `Оплата: ${method}. Курьер свяжется с вами через 5 минут.`;
+        document.getElementById('successMsg').innerText = `Метод оплаты: ${method}. Ожидайте звонка!`;
         toast.style.display = 'block';
-        
-        setTimeout(() => { toast.style.display = 'none'; }, 5000);
-        
-        cart = [];
-        updateUI();
-        toggleCart();
+        setTimeout(() => toast.style.display = 'none', 4000);
+        cart = []; updateUI(); toggleCart();
     }
 </script>
 </body>
